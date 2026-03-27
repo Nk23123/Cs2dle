@@ -93,7 +93,7 @@ def extrair_perfil_liquipedia(url_jogador):
             time_nome = driver.find_element(By.XPATH, xpath_team).text.strip()
             
             if not time_nome or time_nome.lower() in ["none", "", "no team"]:
-                print(f"🕵️ Campo principal vazio. Aguardando carregamento do History...")
+                print(f"Campo principal vazio. Aguardando carregamento do History...")
                 
                 # ESPERA ATÉ 10 SEGUNDOS para o histórico aparecer
                 wait = WebDriverWait(driver, 10)
@@ -139,7 +139,7 @@ def extrair_perfil_liquipedia(url_jogador):
         except:
             status_final = "Não Atuando"
 
-        print(f"✅ Dados Extraídos: {nome_formatado} | {nacionalidade} | {funcao} | {idade} anos | {time_nome} | {status_final}")
+        print(f"Dados Extraídos: {nome_formatado} | {nacionalidade} | {funcao} | {idade} anos | {time_nome} | {status_final}")
 
         payload = {
             "nome": nome_formatado,
@@ -152,9 +152,9 @@ def extrair_perfil_liquipedia(url_jogador):
 
         res = requests.post(API_URL, json=payload)
         if res.status_code == 201:
-            print(f"🚀 {nome_formatado} sincronizado no Supabase!")
+            print(f"{nome_formatado} sincronizado no Supabase!")
         else:
-            print(f"⚠️ Erro ao salvar {nome_formatado}: {res.text}")
+            print(f"Erro ao salvar {nome_formatado}: {res.text}")
 
     except Exception as e:
         print(f"❌ Erro no perfil {url_jogador}: {e}")
