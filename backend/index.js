@@ -1,11 +1,13 @@
 const express = require('express');
 const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-const supabaseUrl = 'https://uldoiuoutbhnmnhuetzt.supabase.co';
-const supabaseKey = 'sb_publishable_tmmu44SisLvv6oeGVryhnw_sG-B8i0U';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Rota inicial
@@ -19,7 +21,7 @@ app.post('/importar', async (req, res) => {
 
   const { data, error } = await supabase
     .from('Jogadores')
-    .upsert(dadosJogador, { onConflict: 'nome' }); // 'nome' deve ser uma coluna única no Supabase
+    .upsert(dadosJogador, { onConflict: 'nome' });
 
   if (error) {
     console.error("Erro no Supabase:", error);
@@ -29,7 +31,9 @@ app.post('/importar', async (req, res) => {
   res.status(201).json({ mensagem: "Jogador sincronizado!", data });
 });
 
-// LISTA SEMPRE NO FINAL
-app.listen(3000, () => {
-  console.log('Servidor rodando em http://localhost:3000');
+// usar porta do .env
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
